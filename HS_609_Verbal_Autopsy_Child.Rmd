@@ -79,7 +79,7 @@ c5_06_2m,c5_06_2d,c5_06_2y: remove, most of the data is don't know/missing
 c5_08m,c5_08d,c5_08y: remove, most of the data is don't know/missing
 
 ```{r}
-df_va <- subset(df_va,select=-c(c1_02,c1_04,c1_05,c1_08a,c1_10,c1_10d,c1_10m,c1_10y,c1_11,c1_15,c1_16,c1_17,c1_18,c1_19_1,c1_19_2,c1_19_3,c1_19_4a,c1_19_4b,c1_19_5,c1_19_6,c1_24,c1_24d,c1_24m,c1_24y,c1_26,c4_07a,c4_31_1,c4_31_2,c4_32,c4_45,c4_47_8b,c5_02_13,c5_02_14,c5_06_2m,c5_06_2d,c5_06_2y,c5_08m,c5_08d,c5_08y))
+df_va <- subset(df_va,select=-c(module,c1_02,c1_04,c1_05,c1_08a,c1_10,c1_10d,c1_10m,c1_10y,c1_11,c1_15,c1_16,c1_17,c1_18,c1_19_1,c1_19_2,c1_19_3,c1_19_4a,c1_19_4b,c1_19_5,c1_19_6,c1_24,c1_24d,c1_24m,c1_24y,c1_26,c4_07a,c4_31_1,c4_31_2,c4_32,c4_45,c4_47_8b,c5_02_13,c5_02_14,c5_06_2m,c5_06_2d,c5_06_2y,c5_08m,c5_08d,c5_08y))
 ```
 
 
@@ -262,4 +262,19 @@ test_set$c1_08b <- apply(test_set[,c("c1_08b","site")], 1, function(x) correct_w
 training_set <- training_set[complete.cases(training_set),]
 test_set <- test_set[complete.cases(test_set),]
 ```
+
+
+**Visualization for EDA**
+```{r}
+# Change colname names for training_set_copy
+library(plyr)
+training_set_copy <- training_set
+```
+
+
+```{r}
+colnames(training_set_copy)<- mapvalues(colnames(training_set_copy), from=c("g4_06","g4_07","g4_08"), to=c("#people_live_at_address","#rooms_in_household","separate_room_for_cooking"))
+```
+
+
 
