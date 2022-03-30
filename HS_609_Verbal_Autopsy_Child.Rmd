@@ -273,7 +273,34 @@ training_set_copy <- training_set
 
 
 ```{r}
-colnames(training_set_copy)<- mapvalues(colnames(training_set_copy), from=c("g4_06","g4_07","g4_08"), to=c("#people_live_at_address","#rooms_in_household","separate_room_for_cooking"))
+colnames(training_set_copy)<- mapvalues(colnames(training_set_copy), from=c("g4_06","g4_07","g4_08"), to=c("num_people_live_at_address","num_rooms_in_household","separate_room_for_cooking"))
+```
+
+
+```{r}
+library(ggplot2)
+```
+
+
+Plot distribution of all the numerical variables with histogram
+```{r}
+hist_list <- list()
+z <- 0
+for (i in 1:ncol(training_set_copy)){
+  if(is.numeric(training_set_copy[,i])){
+    z <- z+1
+    name <- paste("hist",colnames(training_set_copy)[i],sep="_")
+    hist <- ggplot(data=training_set_copy,aes_string(names(training_set_copy)[i]))+
+      geom_histogram(fill='lightblue',color='black')+
+      labs(x=colnames(training_set_copy)[i],y= "Frequency")
+    hist_list[[z]] <- hist
+  }
+}
+```
+
+
+```{r}
+ggarrange(plotlist=hist_list,ncol = 3)
 ```
 
 
