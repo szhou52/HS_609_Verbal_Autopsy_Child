@@ -336,9 +336,84 @@ ggarrange(plotlist=bar_list[-2],ncol=2)
 ```
 
 
+```{r}
+# Top 5 cause of death for the whole dataset: Pneumonia, Diarrhea/Dysentery,Other Defined Causes of Child Deaths, Sepsis, Malaria
+top_5 <- c("Pneumonia","Diarrhea/Dysentery","Other Defined Causes of Child Deaths", "Sepsis", "Malaria")
+training_set_copy_top5 <- training_set_copy[training_set_copy$gs_text34 %in% top_5,]
+```
+
+```{r}
+# Remove classes with 0 cases
+for (i in 1:length(names(training_set_copy_top5))){
+  if (is.factor(training_set_copy_top5[,i])){
+    training_set_copy_top5[,i] <- as.character(training_set_copy_top5[,i])
+    training_set_copy_top5[,i] <- as.factor(training_set_copy_top5[,i])
+  }
+}
+```
+
+```{r}
+table(training_set_copy_top5$gs_text34)
+```
 
 
-**EDA Visulization of Gender of Deceased**
+We may also want to see the top 5 cause of death of each area
+```{r}
+top_5_by_site <- training_set_copy[,c("site","gs_text34")]%>%
+  group_by(site,gs_text34)%>%
+  dplyr::summarise(count_cause=n())%>%
+  arrange(site,desc(count_cause))%>%
+  filter(row_number()==1:5)
+  
+```
+
+```{r}
+top_5_by_site 
+```
+
+```{r}
+var_list <- names(training_set_copy_top5)
+var_list
+```
+
+
+
+Plot grouped box plots for numerical variables with the top 5 cause of death (across the whole dataset)
+```{r fig.width = 10}
+var_list <- names(training_set_copy_top5)
+grouped_box_list <- list()
+z <- 0
+for (i in 3:length(var_list)){
+  if (is.numeric(training_set_copy_top5[,i])){
+    z <- z+1
+    grouped_box <- ggplot(data=training_set_copy_top5,aes_string(x=var_list[1],y=var_list[i],fill=var_list[2]))+
+      geom_boxplot()+
+      theme(axis.text=element_text(size=15,angle=45,hjust=1),axis.title=element_text(size=15),legend.key.size=unit(2,"cm"),legend.title=element_text(size=15),legend.text=element_text(size=15))
+    grouped_box_list[[z]] <- grouped_box
+  }
+}
+```
+
+```{r fig.width = 10}
+grouped_box_list
+```
+
+
+Plot grouped bar charts for categorical variables with the top 5 cause of death (across the whole dataset) (just an example, and will put it in loop later)
+```{r fig.width = 10}
+grouped_class <- training_set_copy_top5 %>% 
+  group_by(site,Gender,gs_text34) %>% 
+  dplyr::summarise(count=n()) %>% 
+  mutate(perc=count/sum(count))
+
+grouped_bar <- ggplot(data=grouped_class, aes(x=Gender, y=perc, fill=gs_text34)) + 
+  geom_bar(position = 'dodge', stat ='identity')+scale_y_continuous(labels = scales::percent)+labs(x = "medical_specialty", y = "Percentage of Readmission", fill = "Readmission") + ggtitle(labs(title = "Distribution of medical_specialty by Readmission"))+ theme(text = element_text(size=12))+ geom_text(aes(label = scales::percent(perc),y = perc),position=position_dodge(width=1), vjust = -0.25,size=3.5)+ facet_grid(. ~ site,scales='free')
+
+grouped_bar
+```
+
+
+**EDA Visualization of Gender of Deceased**
 ```{r}
 gen <- ggplot(data = training_set_copy) + 
   geom_bar(aes(x = c1_09, fill = c1_09), stat = "Count")
