@@ -5,41 +5,38 @@ date: "3/23/2022"
 output: html_document
 ---
 
-```{r setup, include=FALSE} 
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 ```
-
 
 ```{r}
 library("dplyr")
 ```
 
-
 ```{r}
 df_va_original <- read.csv("./IHME_PHMRC_VA_DATA_CHILD_Y2013M09D11_0.csv")
 ```
 
-
 **Some of the columns were dropped as they are irrelevant/duplicated or not informative (for example, the frequency of the words doesn't provide much information without a context)**
+
 ```{r}
 # drop columns that are not necessary
 df_va <- subset(df_va_original, select = -c(gs_code34,va34,gs_code46,gs_text46,va46,gs_code55,gs_text55,va55,gs_comorbid1,gs_comorbid2,gs_level,g1_01d,g1_01m,g1_01y,g1_05,g1_06d,g1_06m,g1_06y,g1_07a,g1_07b,g1_07c,g1_08,g1_09,g1_10,g2_01,g2_02,g2_03ad,g2_03am,g2_03ay,g2_03bd,g2_03bm,g2_03by,g2_03cd,g2_03cm,g2_03cy,g2_03dd,g2_03dm,g2_03dy,g2_03ed,g2_03em,g2_03ey,g2_03fd,g2_03fm,g2_03fy,g3_01,g4_02,g4_03a,g4_03b,g4_04,g4_05,g5_05,g5_06a,g5_06b,g5_07,g5_08,word_diseas,word_final,word_child,word_condit,word_digest,word_glucos,word_bodi,word_tetanus,word_hand,word_failur,word_reduc,word_son,word_breath,word_look,word_till,word_spot,word_proper,word_medic,word_found,word_girl,word_ray,word_babi,word_privat,word_reason,word_poison,word_bring,word_renal,word_rash,word_healthi,word_interview,word_acquir,word_accid,word_test,word_cough,word_respiratori,word_mother,word_traffic,word_hospit,word_come,word_abdomen,word_abl,word_result,word_pregnanc,word_suffer,word_check,word_pass,word_famili,word_die,word_road,word_colleg,word_dengu,word_doctor,word_drown,word_tumor,word_cardio,word_eat,word_fall,word_examin,word_acidosi,word_fire,word_fit,word_sepsi,word_nilouf,word_happen,word_head,word_headach,word_skin,word_blood,word_home,word_hypertens,word_immedi,word_bad,word_inject,word_left,word_leg,word_daughter,word_malnutrit,word_milk,word_clock,word_anemia,word_nilof,word_complain,word_hour,word_nurs,word_snake,word_pain,word_pneumonia,word_polic,word_provid,word_boy,word_recov,word_malaria,word_asthma,word_explain,word_scan,word_gandhi,word_born,word_lung,word_stomach,word_difficulti,word_weak,word_client,word_time,word_told,word_transfus,word_treat,word_unconsci,word_water,word_loos,word_week,word_stool,word_ill,word_lot,word_jaundic,word_communiti,word_health,word_deliv,word_drink,word_servic,word_fine,word_eye,word_particip,word_money,word_chest,word_increas,word_live,word_expir,word_normal,word_brain,word_stay,word_urin,word_remov,word_admit,word_bite,word_center,word_measl,word_kept,word_especi,word_neck,word_serious,word_due,word_care,word_day,word_pox,word_hiv,word_icu,word_start,word_nose,word_leukemia,word_caus,word_near,word_morn,word_vomit,word_accord,word_gastric,word_receiv,word_coma,word_father,word_clinic,word_emerg,word_month,word_birth,word_treatment,word_sick,word_dehydr,word_prescrib,word_children,word_motion,word_refer,word_ward,word_certif,word_advis,word_hous,word_medicin,word_play,word_heart,word_diarrhea,word_baby,word_mouth,word_sever,word_shock,word_dead,word_oper,word_night,word_indraw,word_provinci,word_cancer,word_brought,word_even,word_convuls,word_addit,word_deceas,word_take,word_oxygen,word_infect,word_cold,word_misplac,word_swell,word_respond,word_transfer,word_thank,word_cri,word_sudden,word_continu,word_sent,word_stop,word_get,word_fever,word_notic,word_hole,word_kidney,word_bluish,word_yellow,word_injuri,word_pulmonari,c6_11,c6_12,c6_13,c6_14,newid))
 ```
 
-
 ```{r}
 str(df_va)
 ```
 
-
 **transform data type: change the characters into categorical variables**
+
 ```{r}
 df_va[sapply(df_va, is.character)] <- lapply(df_va[sapply(df_va, is.character)], 
                                                            as.factor)
 ```
 
-
 **Compute table distribution for all the categorical variables**
+
 ```{r}
 for (i in 1:ncol(df_va)){
   if (is.factor(df_va[,i])){
@@ -50,15 +47,11 @@ for (i in 1:ncol(df_va)){
 }
 ```
 
-
 **Columns further need to be removed**\
 module: remove (same value for all observations)\
 c1_02: remove, as only applies to multiple births (info is covered by c1_01 already)\
-c1_04: remove, as it only applies to cases where moms were dead (and info is covered in c1_03)
-c1_05: remove, as only applies to cases where moms were dead
-c1_08a: remove since only showing units (may refer to c1_08b for detailed values)\
-c1_10,c1_10d,c1_10m,c1_10y: remove, duplicated with g5_01
-c1_11: remove, since we only want to focus on children who shouldn't have been dead at birth\
+c1_04: remove, as it only applies to cases where moms were dead (and info is covered in c1_03) c1_05: remove, as only applies to cases where moms were dead c1_08a: remove since only showing units (may refer to c1_08b for detailed values)\
+c1_10,c1_10d,c1_10m,c1_10y: remove, duplicated with g5_01 c1_11: remove, since we only want to focus on children who shouldn't have been dead at birth\
 c1_15: remove, since there's only one class\
 c1_16: remove, since there's only one class\
 c1_17: remove, since there's only one class\
@@ -74,18 +67,16 @@ c4_32: remove, as only applies to the ones who developed rash (info already cove
 c4_45: remove, since most of the value missing\
 c4_47_8b: remove, since most of the value missing\
 c5_02_13: remove, since there's only one class\
-c5_02_14: remove, since there's only one class
-c5_06_2m,c5_06_2d,c5_06_2y: remove, most of the data is don't know/missing
-c5_08m,c5_08d,c5_08y: remove, most of the data is don't know/missing
+c5_02_14: remove, since there's only one class c5_06_2m,c5_06_2d,c5_06_2y: remove, most of the data is don't know/missing c5_08m,c5_08d,c5_08y: remove, most of the data is don't know/missing
 
 ```{r}
-df_va <- subset(df_va,select=-c(module,c1_02,c1_04,c1_05,c1_08a,c1_10,c1_10d,c1_10m,c1_10y,c1_11,c1_15,c1_16,c1_17,c1_18,c1_19_1,c1_19_2,c1_19_3,c1_19_4a,c1_19_4b,c1_19_5,c1_19_6,c1_24,c1_24d,c1_24m,c1_24y,c1_26,c4_07a,c4_31_1,c4_31_2,c4_32,c4_45,c4_47_8b,c5_02_13,c5_02_14,c5_06_2m,c5_06_2d,c5_06_2y,c5_08m,c5_08d,c5_08y))
+df_va <- subset(df_va,select=-c(c1_02,c1_04,c1_05,c1_08a,c1_10,c1_10d,c1_10m,c1_10y,c1_11,c1_15,c1_16,c1_17,c1_18,c1_19_1,c1_19_2,c1_19_3,c1_19_4a,c1_19_4b,c1_19_5,c1_19_6,c1_24,c1_24d,c1_24m,c1_24y,c1_26,c4_07a,c4_31_1,c4_31_2,c4_32,c4_45,c4_47_8b,c5_02_13,c5_02_14,c5_06_2m,c5_06_2d,c5_06_2y,c5_08m,c5_08d,c5_08y))
 ```
-
 
 **Columns need further processed**\
 g5_01d,g5_01m,g5_01y: compute DOB and then remove\
 g5_03d,g5_03m,g5_03y: compute DOD and then remove
+
 ```{r}
 # Compute DOB
 df_va$DOB_month <- match(df_va$g5_01m,month.name)
@@ -106,8 +97,8 @@ df_va <- subset(df_va,select=-c(DOD_str,DOD_month))
 df_va <- subset(df_va,select=-c(g5_01d,g5_01m,g5_01y,g5_03d,g5_03m,g5_03y))
 ```
 
-
 c1_22a: combine "hospital" with "other health facility" to "Health facility"
+
 ```{r}
 df_va$c1_22a <- as.character(df_va$c1_22a)
 df_va$c1_22a[df_va$c1_22a=="Hospital"] <- "Health Facility"
@@ -115,43 +106,41 @@ df_va$c1_22a[df_va$c1_22a=="Other Health Facility"] <- "Health Facility"
 df_va$c1_22a <- as.factor(df_va$c1_22a)
 ```
 
-
 c5_06_1d,c5_06_1m,c5_06_1y: remove, as most of the records are missing
+
 ```{r}
 df_va <- subset(df_va,select=-c(c5_06_1d,c5_06_1m,c5_06_1y))
 ```
 
-
 **Imputation and removal for missing values**\
 Check missing values for numeric variables
+
 ```{r}
 df_va_num <- select_if(df_va,is.numeric)
 ```
-
 
 ```{r}
 summary(df_va_num)
 ```
 
-
 Remove c5_07_1 and c5_07_1 since most of them are 0 (missing in this case)
+
 ```{r}
 df_va <- subset(df_va,select=-c(c5_07_1,c5_07_2))
 ```
 
-
 c1_08b: re-code "9999" as NA
+
 ```{r}
 df_va$c1_08b[df_va$c1_08b==9999] <- NA
 ```
 
-
 Drop g5_04a,g5_04b,g5_04c and use DOB and DOD to compute the age of death (in years)
+
 ```{r}
 df_va <- subset(df_va,select=-c(g5_04a,g5_04b,g5_04c))
 df_va$age_death <- as.numeric(difftime(df_va$DOD, df_va$DOB, units = "days"))/365
 ```
-
 
 ```{r}
 library(naniar)
@@ -159,6 +148,7 @@ vis_miss(df_va_num)
 ```
 
 split training and test set
+
 ```{r}
 library(caTools)
 set.seed(123)
@@ -167,10 +157,10 @@ training_set = subset(df_va, split == TRUE)
 test_set = subset(df_va, split == FALSE)
 ```
 
-
 Deal with "Don't know", "Refuse to answer" and original missing value for all the categorical variables\
-1) If the sum of counts of all of them three is >=10: re-code all of them with "Don't know" as a group itself\
-2) If the sum of counts of all of them three is <10: re-code all of them as missing value
+1) If the sum of counts of all of them three is \>=10: re-code all of them with "Don't know" as a group itself\
+2) If the sum of counts of all of them three is \<10: re-code all of them as missing value
+
 ```{r}
 # Define function impute_cat
 impute_cat <- function(df_va){
@@ -214,15 +204,14 @@ impute_cat <- function(df_va){
 
 ```
 
-
 ```{r}
 # apply impute_cat on both training set and test set
 training_set <- impute_cat(training_set)
 test_set <- impute_cat(test_set)
 ```
 
-
 Impute missing values of c1_08b with mean of the data by different site groups (fit on training set and transform both sets)
+
 ```{r}
 tapply(training_set$c1_08b,training_set$site, mean, na.rm=TRUE)
 ```
@@ -256,52 +245,9 @@ training_set$c1_08b <- apply(training_set[,c("c1_08b","site")], 1, function(x) c
 test_set$c1_08b <- apply(test_set[,c("c1_08b","site")], 1, function(x) correct_weight(x[1],x[2]))
 ```
 
-
 **Remove all the remaining missing data for both sets**
+
 ```{r}
 training_set <- training_set[complete.cases(training_set),]
 test_set <- test_set[complete.cases(test_set),]
 ```
-
-
-**Visualization for EDA**
-```{r}
-# Change colname names for training_set_copy
-library(plyr)
-training_set_copy <- training_set
-```
-
-
-```{r}
-colnames(training_set_copy)<- mapvalues(colnames(training_set_copy), from=c("g4_06","g4_07","g4_08"), to=c("num_people_live_at_address","num_rooms_in_household","separate_room_for_cooking"))
-```
-
-
-```{r}
-library(ggplot2)
-```
-
-
-Plot distribution of all the numerical variables with histogram
-```{r}
-hist_list <- list()
-z <- 0
-for (i in 1:ncol(training_set_copy)){
-  if(is.numeric(training_set_copy[,i])){
-    z <- z+1
-    name <- paste("hist",colnames(training_set_copy)[i],sep="_")
-    hist <- ggplot(data=training_set_copy,aes_string(names(training_set_copy)[i]))+
-      geom_histogram(fill='lightblue',color='black')+
-      labs(x=colnames(training_set_copy)[i],y= "Frequency")
-    hist_list[[z]] <- hist
-  }
-}
-```
-
-
-```{r}
-ggarrange(plotlist=hist_list,ncol = 3)
-```
-
-
-
