@@ -21,7 +21,7 @@ df_va_original <- read.csv("./IHME_PHMRC_VA_DATA_CHILD_Y2013M09D11_0.csv")
 
 ```{r}
 # drop columns that are not necessary
-df_va <- subset(df_va_original, select = -c(gs_code34,va34,gs_code46,gs_text46,va46,gs_code55,gs_text55,va55,gs_comorbid1,gs_comorbid2,gs_level,g1_01d,g1_01m,g1_01y,g1_05,g1_06d,g1_06m,g1_06y,g1_07a,g1_07b,g1_07c,g1_08,g1_09,g1_10,g2_01,g2_02,g2_03ad,g2_03am,g2_03ay,g2_03bd,g2_03bm,g2_03by,g2_03cd,g2_03cm,g2_03cy,g2_03dd,g2_03dm,g2_03dy,g2_03ed,g2_03em,g2_03ey,g2_03fd,g2_03fm,g2_03fy,g3_01,g4_02,g4_03a,g4_03b,g4_04,g4_05,g5_05,g5_06a,g5_06b,g5_07,g5_08,word_diseas,word_final,word_child,word_condit,word_digest,word_glucos,word_bodi,word_tetanus,word_hand,word_failur,word_reduc,word_son,word_breath,word_look,word_till,word_spot,word_proper,word_medic,word_found,word_girl,word_ray,word_babi,word_privat,word_reason,word_poison,word_bring,word_renal,word_rash,word_healthi,word_interview,word_acquir,word_accid,word_test,word_cough,word_respiratori,word_mother,word_traffic,word_hospit,word_come,word_abdomen,word_abl,word_result,word_pregnanc,word_suffer,word_check,word_pass,word_famili,word_die,word_road,word_colleg,word_dengu,word_doctor,word_drown,word_tumor,word_cardio,word_eat,word_fall,word_examin,word_acidosi,word_fire,word_fit,word_sepsi,word_nilouf,word_happen,word_head,word_headach,word_skin,word_blood,word_home,word_hypertens,word_immedi,word_bad,word_inject,word_left,word_leg,word_daughter,word_malnutrit,word_milk,word_clock,word_anemia,word_nilof,word_complain,word_hour,word_nurs,word_snake,word_pain,word_pneumonia,word_polic,word_provid,word_boy,word_recov,word_malaria,word_asthma,word_explain,word_scan,word_gandhi,word_born,word_lung,word_stomach,word_difficulti,word_weak,word_client,word_time,word_told,word_transfus,word_treat,word_unconsci,word_water,word_loos,word_week,word_stool,word_ill,word_lot,word_jaundic,word_communiti,word_health,word_deliv,word_drink,word_servic,word_fine,word_eye,word_particip,word_money,word_chest,word_increas,word_live,word_expir,word_normal,word_brain,word_stay,word_urin,word_remov,word_admit,word_bite,word_center,word_measl,word_kept,word_especi,word_neck,word_serious,word_due,word_care,word_day,word_pox,word_hiv,word_icu,word_start,word_nose,word_leukemia,word_caus,word_near,word_morn,word_vomit,word_accord,word_gastric,word_receiv,word_coma,word_father,word_clinic,word_emerg,word_month,word_birth,word_treatment,word_sick,word_dehydr,word_prescrib,word_children,word_motion,word_refer,word_ward,word_certif,word_advis,word_hous,word_medicin,word_play,word_heart,word_diarrhea,word_baby,word_mouth,word_sever,word_shock,word_dead,word_oper,word_night,word_indraw,word_provinci,word_cancer,word_brought,word_even,word_convuls,word_addit,word_deceas,word_take,word_oxygen,word_infect,word_cold,word_misplac,word_swell,word_respond,word_transfer,word_thank,word_cri,word_sudden,word_continu,word_sent,word_stop,word_get,word_fever,word_notic,word_hole,word_kidney,word_bluish,word_yellow,word_injuri,word_pulmonari,c6_11,c6_12,c6_13,c6_14,newid))
+df_va <- subset(df_va_original, select = -c(gs_code34,va34,gs_code46,gs_text46,va46,gs_code55,gs_text55,va55,gs_comorbid1,gs_comorbid2,gs_level,g1_01d,g1_01m,g1_01y,g1_05,g1_06d,g1_06m,g1_06y,g1_07a,g1_07b,g1_07c,g1_08,g1_09,g1_10,g2_01,g2_02,g2_03ad,g2_03am,g2_03ay,g2_03bd,g2_03bm,g2_03by,g2_03cd,g2_03cm,g2_03cy,g2_03dd,g2_03dm,g2_03dy,g2_03ed,g2_03em,g2_03ey,g2_03fd,g2_03fm,g2_03fy,g3_01,g4_02,g4_03a,g4_03b,g4_04,g4_05,g5_05,g5_06a,g5_06b,g5_07,g5_08,word_diseas,word_final,word_child,word_condit,word_digest,word_glucos,word_bodi,word_tetanus,word_hand,word_failur,word_reduc,word_son,word_breath,word_look,word_till,word_spot,word_proper,word_medic,word_found,word_girl,word_ray,word_babi,word_privat,word_reason,word_poison,word_bring,word_renal,word_rash,word_healthi,word_interview,word_acquir,word_accid,word_test,word_cough,word_respiratori,word_mother,word_traffic,word_hospit,word_come,word_abdomen,word_abl,word_result,word_pregnanc,word_suffer,word_check,word_pass,word_famili,word_die,word_road,word_colleg,word_dengu,word_doctor,word_drown,word_tumor,word_cardio,word_eat,word_fall,word_examin,word_acidosi,word_fire,word_fit,word_sepsi,word_nilouf,word_happen,word_head,word_headach,word_skin,word_blood,word_home,word_hypertens,word_immedi,word_bad,word_inject,word_left,word_leg,word_daughter,word_malnutrit,word_milk,word_clock,word_anemia,word_nilof,word_complain,word_hour,word_nurs,word_snake,word_pain,word_pneumonia,word_polic,word_provid,word_boy,word_recov,word_malaria,word_asthma,word_explain,word_scan,word_gandhi,word_born,word_lung,word_stomach,word_difficulti,word_weak,word_client,word_time,word_told,word_transfus,word_treat,word_unconsci,word_water,word_loos,word_week,word_stool,word_ill,word_lot,word_jaundic,word_communiti,word_health,word_deliv,word_drink,word_servic,word_fine,word_eye,word_particip,word_money,word_chest,word_increas,word_live,word_expir,word_normal,word_brain,word_stay,word_urin,word_remov,word_admit,word_bite,word_center,word_measl,word_kept,word_especi,word_neck,word_serious,word_due,word_care,word_day,word_pox,word_hiv,word_icu,word_start,word_nose,word_leukemia,word_caus,word_near,word_morn,word_vomit,word_accord,word_gastric,word_receiv,word_coma,word_father,word_clinic,word_emerg,word_month,word_birth,word_treatment,word_sick,word_dehydr,word_prescrib,word_children,word_motion,word_refer,word_ward,word_certif,word_advis,word_hous,word_medicin,word_play,word_heart,word_diarrhea,word_baby,word_mouth,word_sever,word_shock,word_dead,word_oper,word_night,word_indraw,word_provinci,word_cancer,word_brought,word_even,word_convuls,word_addit,word_deceas,word_take,word_oxygen,word_infect,word_cold,word_misplac,word_swell,word_respond,word_transfer,word_thank,word_cri,word_sudden,word_continu,word_sent,word_stop,word_get,word_fever,word_notic,word_hole,word_kidney,word_bluish,word_yellow,word_injuri,word_pulmonari,c6_11,c6_12,c6_13,c6_14,newid,g5_02,module))
 ```
 
 ```{r}
@@ -266,6 +266,14 @@ training_set_copy <- training_set
 
 ```{r}
 colnames(training_set_copy)<- mapvalues(colnames(training_set_copy), from=c("g4_06","g4_07","g4_08"), to=c("num_people_live_at_address","num_rooms_in_household","separate_room_for_cooking"))
+colnames(training_set_copy)<- mapvalues(colnames(training_set_copy), from=c("c1_09","c1_01","c1_03"), to=c("Gender","Singleton_or_Multiple_Birth","Mother_Living_or_Deceased"))
+colnames(training_set_copy)<- mapvalues(colnames(training_set_copy), from=c("c1_06a","c1_07","c1_08b","c1_12","c1_13"), to=c("Location_of_Birth","Size_at_Birth","Weight_at_Birth","Did_the_Baby_Cry","Did_the_Baby_Move"))
+colnames(training_set_copy)<- mapvalues(colnames(training_set_copy), from=c("num_people_live_at_address","num_rooms_in_household","separate_room_for_cooking"), to=c("Num_People_Live_at_Address","Num_Rooms_in_Household","Separate_Room_for_Cooking"))
+colnames(training_set_copy)<- mapvalues(colnames(training_set_copy), from=c("c1_14","c1_20","c1_21","c1_22a","c1_25","c4_01","c4_02","c4_03"), to=c("Did_the_Baby_Breathe","Age_at_Onset_of_Illness","Duration_of_Illness", "Location_of_Death","Age_at_Time_of_Death","Fever_During_Illness","Duration_of_Fever_in_Days","Did_the_Fever_Continue_to_Death"))
+colnames(training_set_copy)<- mapvalues(colnames(training_set_copy), from=c("c4_04","c4_05","c4_06","c4_07b","c4_08","c4_09","c4_10","c4_11","c4_12","c4_13","c4_14","c4_15","c4_16","c4_17","c4_18", "c4_19"), to=c("Severity_of_Fever","Fever_Pattern","Loose_Liquid_Stool", "Highest_Num_Loose_Stool_per_Day_During_Illness","Num_Days_Before_Death_Loose_Stool_Began","Loose_Stool_Cont_Until_Death","Num_Days_Before_Death_Loose_Stool_Stopped","Blood_in_Stool", "Cough_During_Illness", "Duration_of_Cough", "Severity_of_Cough", "Vomitus_after_Coughing", "Difficulty_Breathing", "Duration_of_Difficulty_Breathing", "Fast_Breathing", "Duration_of_Fast_Breathing"))
+colnames(training_set_copy)<- mapvalues(colnames(training_set_copy), from=c("c4_20", "c4_22", "c4_23", "c4_24", "c4_25", "c4_26","c4_27", "c4_28", "c4_29", "c4_30", "c4_33", "c4_34", "c4_35", "c4_36", "c4_37", "c4_38", "c4_39","c4_40", "c4_41", "c4_42"), to=c("Indrawing_of_Chest", "Breathing_Stridor", "Breathing_Grunting", "Breathing_Wheezing", "Convulsions", "Loss_of_Consciousness", "Duration_Before_Death_LOC_Occurred", "Stiff_Neck", "Bulging_Fontanelle", "Skin_Rash", "Duration_of_Rash", "Blisters_Present_in_Rash", "Limbs_Become_Thin", "Swollen_Legs_or_Feet", "Duration_of_Swelling", "Skin_Flake_Off_in_Patches", "Hair_Color_Change_to_Red_Yellow", "Protruding_Belly", "Pallor_or_Lack_of_Blood", "Swelling_in_Armpits"))
+colnames(training_set_copy)<- mapvalues(colnames(training_set_copy), from=c("c4_43","c4_44","c4_46", "c4_47_1","c4_47_2", "c4_47_3", "c4_47_4", "c4_47_5","c4_47_6","c4_47_7","c4_47_8a","c4_47_9","c4_47_10","c4_47_11"), to=c("Whitish_Rash_in_Mouth", "Bleeding_Seen","Skin_Turned_Black", "Suffered_Road_Traffic_Injury", "Suffered_a_Fall", "Suffered_Drowning", "Suffered_Poisoning", "Suffered_Bite_Sting", "Suffered_Burn_Fire", "Victim_of_Violence", "Other_Injury", "Unsure_if_Injury_Occurred","Refused_to_Answer_if_Deceased_Suffered_Injury", "Did_Not_Suffer_Injury" ))
+colnames(training_set_copy)<- mapvalues(colnames(training_set_copy), from=c("c4_48","c4_49","c5_01","c5_02_1","c5_02_2","c5_02_3","c5_02_4","c5_02_5","c5_02_6","c5_02_7","c5_02_8","c5_02_9", "c5_02_10", "c5_02_11a","c5_02_12","c5_04", "c5_05","c5_10", "c5_11", "c5_17", "c5_18", "c5_19"), to=c("Injury_Intentionally_Inflicted_by_Someone","Days_Survived_After_Injury","Sought_Care_While_Ill", "Care_Sought_Traditional_Healer", "Care_Sought_Homeopath", "Care_Sought_Religious_Leader", "Care_Sought_Governmental_Hospital", "Care_Sought_Governmental_Health_Center_Clinic", "Care_Sought_Private_Hospital", "Care_Sought_Community_Based_Practioner", "Care_Sought_Trained_Birth_Attendant", "Care_Sought_Private_Physician", "Care_Sought_Pharmacy", "Care_Sought_Other_Provider", "Care_Sought_Relative_Friend", "Health_Records_for_Deceased", "Granted_Access_to_Health_Records", "Death_Certificate_Issued", "Granted_Access_to_Death_Certificate", "Mother_Ever_Tested_for_HIV", "Mother_HIV_Positive", "Mother_AIDS_Positive"))
 ```
 
 
@@ -281,10 +289,11 @@ z <- 0
 for (i in 1:ncol(training_set_copy)){
   if(is.numeric(training_set_copy[,i])){
     z <- z+1
-    name <- paste("hist",colnames(training_set_copy)[i],sep="_")
     hist <- ggplot(data=training_set_copy,aes_string(names(training_set_copy)[i]))+
       geom_histogram(fill='lightblue',color='black')+
-      labs(x=colnames(training_set_copy)[i],y= "Frequency")
+      labs(x=colnames(training_set_copy)[i],y= "Frequency")+
+      theme(axis.text=element_text(size=12),
+        axis.title=element_text(size=8))
     hist_list[[z]] <- hist
   }
 }
@@ -292,8 +301,42 @@ for (i in 1:ncol(training_set_copy)){
 
 
 ```{r}
-ggarrange(plotlist=hist_list,ncol = 3)
+ggarrange(plotlist=hist_list,ncol = 2)
 ```
+
+
+Plot bar charts for all the categorical variables
+```{r}
+library(scales)
+bar_list <- list()
+z <- 0
+for (i in 1:ncol(training_set_copy)){
+  if(is.factor(training_set_copy[,i])){
+    z <- z+1
+    class <- training_set_copy %>% 
+     group_by((training_set_copy)[i]) %>%
+     dplyr::summarise(number=n()) %>%
+     mutate(percentage=percent(number/sum(number))) %>% 
+     mutate(pos = cumsum(number)- number/1.5) #Create a variable to indicate the position of labels 
+    bar <- ggplot(data=class,aes_string(x=colnames(class)[1],y=colnames(class)[2]))+
+      geom_bar(fill='lightblue',color='black',stat = "identity")+
+      labs(x=colnames(training_set_copy)[i],y= "Count")+
+      geom_text(aes(label=paste(number,"(",percentage,")")),vjust=-0.5,size=2,color="red")+
+      theme(axis.text=element_text(size=8,angle=45,hjust=1),axis.title=element_text(size=8))
+    bar_list[[z]] <- bar
+  }
+}
+```
+
+
+```{r}
+# Cause of death have many bins so I plot it separately
+bar_list[[2]]
+ggarrange(plotlist=bar_list[-2],ncol=2)
+```
+
+
+
 
 **EDA Visulization of Gender of Deceased**
 ```{r}
