@@ -378,7 +378,7 @@ var_list
 
 
 
-Plot grouped box plots for numerical variables with the top 5 cause of death (across the whole dataset)
+Plot grouped box plots for numerical variables with top 5 cause of death (across the whole dataset)
 ```{r fig.width = 10}
 var_list <- names(training_set_copy_top5)
 grouped_box_list <- list()
@@ -398,25 +398,98 @@ for (i in 3:length(var_list)){
 grouped_box_list
 ```
 
-
-Plot grouped bar charts for categorical variables with the top 5 cause of death (across the whole dataset) (just an example, and will put it in loop later)
-```{r fig.width = 10}
-grouped_class <- training_set_copy_top5 %>% 
-  group_by(site,Gender,gs_text34) %>% 
-  dplyr::summarise(count=n()) %>% 
-  mutate(perc=count/sum(count))
-
-grouped_bar <- ggplot(data=grouped_class, aes(x=Gender, y=perc, fill=gs_text34)) + 
-  geom_bar(position = 'dodge', stat ='identity')+scale_y_continuous(labels = scales::percent)+labs(x = "medical_specialty", y = "Percentage of Readmission", fill = "Readmission") + ggtitle(labs(title = "Distribution of medical_specialty by Readmission"))+ theme(text = element_text(size=12))+ geom_text(aes(label = scales::percent(perc),y = perc),position=position_dodge(width=1), vjust = -0.25,size=3.5)+ facet_grid(. ~ site,scales='free')
-
-grouped_bar
+Plot grouped bar charts for categorical variables with the top 5 cause of death (across the whole dataset) (I only plot for "Pneumonia","Diarrhea/Dysentery","Sepsis")
+```{r}
+library(dplyr)
+top_5 <-c("Pneumonia","Diarrhea/Dysentery","Other Defined Causes of Child Deaths","Sepsis", "Malaria")
 ```
+
+
+Compute disease prevalence by site. The number will be used to define if a given cause is more prevalent in one group than another across different sites.
+```{r}
+cause_prev_by_site <- training_set_copy[,c("site","gs_text34")]%>%
+  group_by(site,gs_text34)%>%
+  dplyr::summarise(count_cause=n())%>%
+  dplyr::mutate(prevalence=count_cause/sum(count_cause))%>%
+  arrange(site,desc(count_cause))
+cause_prev_by_site
+```
+
+
+
+```{r fig.width = 7}
+# Pneumonia
+grouped_bar_Pneumonia <- list()
+z <- 0
+for (i in 3:length(names(training_set_copy))){
+  if (is.factor(training_set_copy[,i]) & names(training_set_copy)[i]!="site" & names(training_set_copy)[i]!="gs_text34"){
+    z <- z+1
+    grouped_class <- training_set_copy[training_set_copy$gs_text34=="Pneumonia",c(1,i)]%>%
+      group_by_all()%>%
+     dplyr::summarise(count=n())%>%
+      group_by(site)%>%
+      dplyr::mutate(perc=count/sum(count))
+    grouped_bar <- ggplot(data=grouped_class, aes_string(x=names(grouped_class)[2], y=names(grouped_class)[4],fill=names(grouped_class)[2]))+geom_bar(position = 'dodge', stat ='identity')+labs(x=names(grouped_class)[2], y ="perc")+ ggtitle(labs(title = "Cause of death: Pneumonia"))+ theme(text = element_text(size=12),axis.title=element_text(size=12),axis.text=element_text(size=12,hjust=1,angle = 45))+ geom_text(aes(label = scales::percent(perc),y = perc,size=10),position=position_dodge(width=1), vjust =-0.5,size=4)+ facet_grid(. ~ site,scales='free')
+    grouped_bar_Pneumonia[[z]] <- grouped_bar
+  }
+}
+grouped_bar_Pneumonia
+```
+
+```{r fig.width = 7}
+# "Diarrhea/Dysentery"
+grouped_bar_Diarrhea <- list()
+z <- 0
+for (i in 3:length(names(training_set_copy))){
+  if (is.factor(training_set_copy[,i]) & names(training_set_copy)[i]!="site" & names(training_set_copy)[i]!="gs_text34"){
+    z <- z+1
+    grouped_class <- training_set_copy[training_set_copy$gs_text34=="Diarrhea/Dysentery",c(1,i)]%>%
+      group_by_all()%>%
+     dplyr::summarise(count=n())%>%
+      group_by(site)%>%
+      dplyr::mutate(perc=count/sum(count))
+    grouped_bar <- ggplot(data=grouped_class, aes_string(x=names(grouped_class)[2], y=names(grouped_class)[4],fill=names(grouped_class)[2]))+geom_bar(position = 'dodge', stat ='identity')+labs(x=names(grouped_class)[2], y ="perc")+ ggtitle(labs(title = "Cause of death: Diarrhea/Dysentery"))+ theme(text = element_text(size=12),axis.title=element_text(size=12),axis.text=element_text(size=12,hjust=1,angle = 45))+ geom_text(aes(label = scales::percent(perc),y = perc,size=10),position=position_dodge(width=1), vjust =-0.5,size=4)+ facet_grid(. ~ site,scales='free')
+    grouped_bar_Pneumonia[[z]] <- grouped_bar
+  }
+}
+grouped_bar_Pneumonia
+```
+
+
+```{r fig.width = 7}
+# Sepsis
+grouped_bar_sepsis <- list()
+z <- 0
+for (i in 3:length(names(training_set_copy))){
+  if (is.factor(training_set_copy[,i]) & names(training_set_copy)[i]!="site" & names(training_set_copy)[i]!="gs_text34"){
+    z <- z+1
+    grouped_class <- training_set_copy[training_set_copy$gs_text34=="Sepsis",c(1,i)]%>%
+      group_by_all()%>%
+     dplyr::summarise(count=n())%>%
+      group_by(site)%>%
+      dplyr::mutate(perc=count/sum(count))
+    grouped_bar <- ggplot(data=grouped_class, aes_string(x=names(grouped_class)[2], y=names(grouped_class)[4],fill=names(grouped_class)[2]))+geom_bar(position = 'dodge', stat ='identity')+labs(x=names(grouped_class)[2], y ="perc")+ ggtitle(labs(title = "Cause of death: Sepsis"))+ theme(text = element_text(size=12),axis.title=element_text(size=12),axis.text=element_text(size=12,hjust=1,angle = 45))+ geom_text(aes(label = scales::percent(perc),y = perc,size=10),position=position_dodge(width=1), vjust =-0.5,size=4)+ facet_grid(. ~ site,scales='free')
+    grouped_bar_sepsis[[z]] <- grouped_bar
+  }
+}
+grouped_bar_sepsis
+```
+
+
+
+
+
+
+
+
+
+
 
 
 **EDA Visualization of Gender of Deceased**
 ```{r}
 gen <- ggplot(data = training_set_copy) + 
-  geom_bar(aes(x = c1_09, fill = c1_09), stat = "Count")
+  geom_bar(aes(x = Gender, fill = Gender), stat = "Count")
 print(gen)
 ```
 
