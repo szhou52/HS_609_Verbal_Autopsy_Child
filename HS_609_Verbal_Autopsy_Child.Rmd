@@ -251,7 +251,7 @@ test_set$c1_08b <- apply(test_set[,c("c1_08b","site")], 1, function(x) correct_w
 training_set <- training_set[complete.cases(training_set),]
 test_set <- test_set[complete.cases(test_set),]
 ```
-<<<<<<< Updated upstream
+
 =======
 
 
@@ -277,6 +277,27 @@ colnames(training_set_copy)<- mapvalues(colnames(training_set_copy), from=c("c4_
 ```
 
 
+Rename test set
+```{r}
+colnames(test_set)<- mapvalues(colnames(test_set), from=c("g4_06","g4_07","g4_08"), to=c("num_people_live_at_address","num_rooms_in_household","separate_room_for_cooking"))
+colnames(test_set)<- mapvalues(colnames(test_set), from=c("c1_09","c1_01","c1_03"), to=c("Gender","Singleton_or_Multiple_Birth","Mother_Living_or_Deceased"))
+colnames(test_set)<- mapvalues(colnames(test_set), from=c("c1_06a","c1_07","c1_08b","c1_12","c1_13"), to=c("Location_of_Birth","Size_at_Birth","Weight_at_Birth","Did_the_Baby_Cry","Did_the_Baby_Move"))
+colnames(test_set)<- mapvalues(colnames(test_set), from=c("num_people_live_at_address","num_rooms_in_household","separate_room_for_cooking"), to=c("Num_People_Live_at_Address","Num_Rooms_in_Household","Separate_Room_for_Cooking"))
+colnames(test_set)<- mapvalues(colnames(test_set), from=c("c1_14","c1_20","c1_21","c1_22a","c1_25","c4_01","c4_02","c4_03"), to=c("Did_the_Baby_Breathe","Age_at_Onset_of_Illness","Duration_of_Illness", "Location_of_Death","Age_at_Time_of_Death","Fever_During_Illness","Duration_of_Fever_in_Days","Did_the_Fever_Continue_to_Death"))
+colnames(test_set)<- mapvalues(colnames(test_set), from=c("c4_04","c4_05","c4_06","c4_07b","c4_08","c4_09","c4_10","c4_11","c4_12","c4_13","c4_14","c4_15","c4_16","c4_17","c4_18", "c4_19"), to=c("Severity_of_Fever","Fever_Pattern","Loose_Liquid_Stool", "Highest_Num_Loose_Stool_per_Day_During_Illness","Num_Days_Before_Death_Loose_Stool_Began","Loose_Stool_Cont_Until_Death","Num_Days_Before_Death_Loose_Stool_Stopped","Blood_in_Stool", "Cough_During_Illness", "Duration_of_Cough", "Severity_of_Cough", "Vomitus_after_Coughing", "Difficulty_Breathing", "Duration_of_Difficulty_Breathing", "Fast_Breathing", "Duration_of_Fast_Breathing"))
+colnames(test_set)<- mapvalues(colnames(test_set), from=c("c4_20", "c4_22", "c4_23", "c4_24", "c4_25", "c4_26","c4_27", "c4_28", "c4_29", "c4_30", "c4_33", "c4_34", "c4_35", "c4_36", "c4_37", "c4_38", "c4_39","c4_40", "c4_41", "c4_42"), to=c("Indrawing_of_Chest", "Breathing_Stridor", "Breathing_Grunting", "Breathing_Wheezing", "Convulsions", "Loss_of_Consciousness", "Duration_Before_Death_LOC_Occurred", "Stiff_Neck", "Bulging_Fontanelle", "Skin_Rash", "Duration_of_Rash", "Blisters_Present_in_Rash", "Limbs_Become_Thin", "Swollen_Legs_or_Feet", "Duration_of_Swelling", "Skin_Flake_Off_in_Patches", "Hair_Color_Change_to_Red_Yellow", "Protruding_Belly", "Pallor_or_Lack_of_Blood", "Swelling_in_Armpits"))
+colnames(test_set)<- mapvalues(colnames(test_set), from=c("c4_43","c4_44","c4_46", "c4_47_1","c4_47_2", "c4_47_3", "c4_47_4", "c4_47_5","c4_47_6","c4_47_7","c4_47_8a","c4_47_9","c4_47_10","c4_47_11"), to=c("Whitish_Rash_in_Mouth", "Bleeding_Seen","Skin_Turned_Black", "Suffered_Road_Traffic_Injury", "Suffered_a_Fall", "Suffered_Drowning", "Suffered_Poisoning", "Suffered_Bite_Sting", "Suffered_Burn_Fire", "Victim_of_Violence", "Other_Injury", "Unsure_if_Injury_Occurred","Refused_to_Answer_if_Deceased_Suffered_Injury", "Did_Not_Suffer_Injury" ))
+colnames(test_set)<- mapvalues(colnames(test_set), from=c("c4_48","c4_49","c5_01","c5_02_1","c5_02_2","c5_02_3","c5_02_4","c5_02_5","c5_02_6","c5_02_7","c5_02_8","c5_02_9", "c5_02_10", "c5_02_11a","c5_02_12","c5_04", "c5_05","c5_10", "c5_11", "c5_17", "c5_18", "c5_19"), to=c("Injury_Intentionally_Inflicted_by_Someone","Days_Survived_After_Injury","Sought_Care_While_Ill", "Care_Sought_Traditional_Healer", "Care_Sought_Homeopath", "Care_Sought_Religious_Leader", "Care_Sought_Governmental_Hospital", "Care_Sought_Governmental_Health_Center_Clinic", "Care_Sought_Private_Hospital", "Care_Sought_Community_Based_Practioner", "Care_Sought_Trained_Birth_Attendant", "Care_Sought_Private_Physician", "Care_Sought_Pharmacy", "Care_Sought_Other_Provider", "Care_Sought_Relative_Friend", "Health_Records_for_Deceased", "Granted_Access_to_Health_Records", "Death_Certificate_Issued", "Granted_Access_to_Death_Certificate", "Mother_Ever_Tested_for_HIV", "Mother_HIV_Positive", "Mother_AIDS_Positive"))
+```
+
+
+merge training_set_copy and test_set just for EDA visualization
+```{r}
+df_merge <- rbind(training_set_copy,test_set)
+```
+
+
+
 ```{r}
 library(ggplot2)
 ```
@@ -286,12 +307,12 @@ Plot distribution of all the numerical variables with histogram
 ```{r}
 hist_list <- list()
 z <- 0
-for (i in 1:ncol(training_set_copy)){
-  if(is.numeric(training_set_copy[,i])){
+for (i in 1:ncol(df_merge)){
+  if(is.numeric(df_merge[,i])){
     z <- z+1
-    hist <- ggplot(data=training_set_copy,aes_string(names(training_set_copy)[i]))+
+    hist <- ggplot(data=df_merge,aes_string(names(df_merge)[i]))+
       geom_histogram(fill='lightblue',color='black')+
-      labs(x=colnames(training_set_copy)[i],y= "Frequency")+
+      labs(x=colnames(df_merge)[i],y= "Frequency")+
       theme(axis.text=element_text(size=12),
         axis.title=element_text(size=8))
     hist_list[[z]] <- hist
@@ -310,17 +331,17 @@ Plot bar charts for all the categorical variables
 library(scales)
 bar_list <- list()
 z <- 0
-for (i in 1:ncol(training_set_copy)){
-  if(is.factor(training_set_copy[,i])){
+for (i in 1:ncol(df_merge)){
+  if(is.factor(df_merge[,i])){
     z <- z+1
-    class <- training_set_copy %>% 
-     group_by((training_set_copy)[i]) %>%
+    class <- df_merge %>% 
+     group_by((df_merge)[i]) %>%
      dplyr::summarise(number=n()) %>%
      mutate(percentage=percent(number/sum(number))) %>% 
      mutate(pos = cumsum(number)- number/1.5) #Create a variable to indicate the position of labels 
     bar <- ggplot(data=class,aes_string(x=colnames(class)[1],y=colnames(class)[2]))+
       geom_bar(fill='lightblue',color='black',stat = "identity")+
-      labs(x=colnames(training_set_copy)[i],y= "Count")+
+      labs(x=colnames(df_merge)[i],y= "Count")+
       geom_text(aes(label=paste(number,"(",percentage,")")),vjust=-0.5,size=2,color="red")+
       theme(axis.text=element_text(size=8,angle=45,hjust=1),axis.title=element_text(size=8))
     bar_list[[z]] <- bar
@@ -339,27 +360,27 @@ ggarrange(plotlist=bar_list[-2],ncol=2)
 ```{r}
 # Top 5 cause of death for the whole dataset: Pneumonia, Diarrhea/Dysentery,Other Defined Causes of Child Deaths, Sepsis, Malaria
 top_5 <- c("Pneumonia","Diarrhea/Dysentery","Other Defined Causes of Child Deaths", "Sepsis", "Malaria")
-training_set_copy_top5 <- training_set_copy[training_set_copy$gs_text34 %in% top_5,]
+df_merge_top5 <- df_merge[df_merge$gs_text34 %in% top_5,]
 ```
 
 ```{r}
 # Remove classes with 0 cases
-for (i in 1:length(names(training_set_copy_top5))){
-  if (is.factor(training_set_copy_top5[,i])){
-    training_set_copy_top5[,i] <- as.character(training_set_copy_top5[,i])
-    training_set_copy_top5[,i] <- as.factor(training_set_copy_top5[,i])
+for (i in 1:length(names(df_merge_top5))){
+  if (is.factor(df_merge_top5[,i])){
+    df_merge_top5[,i] <- as.character(df_merge_top5[,i])
+    df_merge_top5[,i] <- as.factor(df_merge_top5[,i])
   }
 }
 ```
 
 ```{r}
-table(training_set_copy_top5$gs_text34)
+table(df_merge_top5$gs_text34)
 ```
 
 
 We may also want to see the top 5 cause of death of each area
 ```{r}
-top_5_by_site <- training_set_copy[,c("site","gs_text34")]%>%
+top_5_by_site <- df_merge[,c("site","gs_text34")]%>%
   group_by(site,gs_text34)%>%
   dplyr::summarise(count_cause=n())%>%
   arrange(site,desc(count_cause))%>%
@@ -372,7 +393,7 @@ top_5_by_site
 ```
 
 ```{r}
-var_list <- names(training_set_copy_top5)
+var_list <- names(df_merge_top5)
 var_list
 ```
 
@@ -380,13 +401,13 @@ var_list
 
 Plot grouped box plots for numerical variables with top 5 cause of death (across the whole dataset)
 ```{r fig.width = 10}
-var_list <- names(training_set_copy_top5)
+var_list <- names(df_merge_top5)
 grouped_box_list <- list()
 z <- 0
 for (i in 3:length(var_list)){
-  if (is.numeric(training_set_copy_top5[,i])){
+  if (is.numeric(df_merge_top5[,i])){
     z <- z+1
-    grouped_box <- ggplot(data=training_set_copy_top5,aes_string(x=var_list[1],y=var_list[i],fill=var_list[2]))+
+    grouped_box <- ggplot(data=df_merge_top5,aes_string(x=var_list[1],y=var_list[i],fill=var_list[2]))+
       geom_boxplot()+
       theme(axis.text=element_text(size=15,angle=45,hjust=1),axis.title=element_text(size=15),legend.key.size=unit(2,"cm"),legend.title=element_text(size=15),legend.text=element_text(size=15))
     grouped_box_list[[z]] <- grouped_box
@@ -405,10 +426,10 @@ top_5 <-c("Pneumonia","Diarrhea/Dysentery","Other Defined Causes of Child Deaths
 ```
 
 
-Compute disease prevalence by site. The number will be used to define if a given cause is more prevalent in one group than another across different sites.
+Compute characteristic/symptom prevalence by site. The number will be used to define if a given characteristic/symptom is more prevalent in one CoD group than another across different sites (example using "Gender" is given below).
 ```{r}
-cause_prev_by_site <- training_set_copy[,c("site","gs_text34")]%>%
-  group_by(site,gs_text34)%>%
+cause_prev_by_site <- df_merge[,c("site","Gender")]%>%
+  group_by(site,Gender)%>%
   dplyr::summarise(count_cause=n())%>%
   dplyr::mutate(prevalence=count_cause/sum(count_cause))%>%
   arrange(site,desc(count_cause))
@@ -421,10 +442,10 @@ cause_prev_by_site
 # Pneumonia
 grouped_bar_Pneumonia <- list()
 z <- 0
-for (i in 3:length(names(training_set_copy))){
-  if (is.factor(training_set_copy[,i]) & names(training_set_copy)[i]!="site" & names(training_set_copy)[i]!="gs_text34"){
+for (i in 3:length(names(df_merge))){
+  if (is.factor(df_merge[,i]) & names(df_merge)[i]!="site" & names(df_merge)[i]!="gs_text34"){
     z <- z+1
-    grouped_class <- training_set_copy[training_set_copy$gs_text34=="Pneumonia",c(1,i)]%>%
+    grouped_class <- df_merge[df_merge$gs_text34=="Pneumonia",c(1,i)]%>%
       group_by_all()%>%
      dplyr::summarise(count=n())%>%
       group_by(site)%>%
@@ -440,10 +461,10 @@ grouped_bar_Pneumonia
 # "Diarrhea/Dysentery"
 grouped_bar_Diarrhea <- list()
 z <- 0
-for (i in 3:length(names(training_set_copy))){
-  if (is.factor(training_set_copy[,i]) & names(training_set_copy)[i]!="site" & names(training_set_copy)[i]!="gs_text34"){
+for (i in 3:length(names(df_merge))){
+  if (is.factor(df_merge[,i]) & names(df_merge)[i]!="site" & names(df_merge)[i]!="gs_text34"){
     z <- z+1
-    grouped_class <- training_set_copy[training_set_copy$gs_text34=="Diarrhea/Dysentery",c(1,i)]%>%
+    grouped_class <- df_merge[df_merge$gs_text34=="Diarrhea/Dysentery",c(1,i)]%>%
       group_by_all()%>%
      dplyr::summarise(count=n())%>%
       group_by(site)%>%
@@ -460,10 +481,10 @@ grouped_bar_Pneumonia
 # Sepsis
 grouped_bar_sepsis <- list()
 z <- 0
-for (i in 3:length(names(training_set_copy))){
-  if (is.factor(training_set_copy[,i]) & names(training_set_copy)[i]!="site" & names(training_set_copy)[i]!="gs_text34"){
+for (i in 3:length(names(df_merge))){
+  if (is.factor(df_merge[,i]) & names(df_merge)[i]!="site" & names(df_merge)[i]!="gs_text34"){
     z <- z+1
-    grouped_class <- training_set_copy[training_set_copy$gs_text34=="Sepsis",c(1,i)]%>%
+    grouped_class <- df_merge[df_merge$gs_text34=="Sepsis",c(1,i)]%>%
       group_by_all()%>%
      dplyr::summarise(count=n())%>%
       group_by(site)%>%
@@ -474,12 +495,6 @@ for (i in 3:length(names(training_set_copy))){
 }
 grouped_bar_sepsis
 ```
-
-
-
-
-
-
 
 
 
