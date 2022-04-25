@@ -208,7 +208,7 @@ Change column names
 ```{r}
 library(plyr)
 colnames(df_va)<- mapvalues(colnames(df_va), from=c("g4_06","g4_07","g4_08"), to=c("num_people_live_at_address","num_rooms_in_household","separate_room_for_cooking"))
-colnames(df_va)<- mapvalues(colnames(df_va), from=c("c1_09","c1_01","c1_03"), to=c("Gender","Singleton_or_Multiple_Birth","Mother_Living_or_Deceased"))
+colnames(df_va)<- mapvalues(colnames(df_va), from=c("c1_09","c1_01","c1_03"), to=c("Gender","Singleton_or_Multiple_Birth","Mother_Living"))
 colnames(df_va)<- mapvalues(colnames(df_va), from=c("c1_06a","c1_07","c1_08b","c1_12","c1_13"), to=c("Location_of_Birth","Size_at_Birth","Weight_at_Birth","Did_the_Baby_Cry","Did_the_Baby_Move"))
 colnames(df_va)<- mapvalues(colnames(df_va), from=c("num_people_live_at_address","num_rooms_in_household","separate_room_for_cooking"), to=c("Num_People_Live_at_Address","Num_Rooms_in_Household","Separate_Room_for_Cooking"))
 colnames(df_va)<- mapvalues(colnames(df_va), from=c("c1_14","c1_20","c1_21","c1_22a","c4_01","c4_02","c4_03"), to=c("Did_the_Baby_Breathe","Age_at_Onset_of_Illness","Duration_of_Illness", "Location_of_Death","Fever_During_Illness","Duration_of_Fever_in_Days","Did_the_Fever_Continue_to_Death"))
@@ -226,7 +226,7 @@ df_va$resident_density <- df_va$Num_People_Live_at_Address/df_va$Num_Rooms_in_Ho
 
 Only keep the variables related to social determinant of health
 ```{r}
-df_va <- subset(df_va,select=c(accidental_death,site, Num_Rooms_in_Household, Separate_Room_for_Cooking, Mother_Living_or_Deceased, Location_of_Birth, Size_at_Birth, Weight_at_Birth, Gender, Location_of_Death, Sought_Care_While_Ill, Care_Sought_Traditional_Healer, Care_Sought_Homeopath, Care_Sought_Religious_Leader, Care_Sought_Governmental_Hospital, Care_Sought_Governmental_Health_Center_Clinic, Care_Sought_Private_Hospital, Care_Sought_Community_Based_Practioner, Care_Sought_Trained_Birth_Attendant, Care_Sought_Private_Physician, Care_Sought_Pharmacy, Care_Sought_Other_Provider, Care_Sought_Relative_Friend, Health_Records_for_Deceased, Mother_Ever_Tested_for_HIV, Mother_HIV_Positive, Mother_AIDS_Positive, age_death, resident_density))
+df_va <- subset(df_va,select=c(accidental_death,site, Num_Rooms_in_Household, Separate_Room_for_Cooking, Mother_Living, Location_of_Birth, Size_at_Birth, Weight_at_Birth, Gender, Location_of_Death, Sought_Care_While_Ill, Care_Sought_Traditional_Healer, Care_Sought_Homeopath, Care_Sought_Religious_Leader, Care_Sought_Governmental_Hospital, Care_Sought_Governmental_Health_Center_Clinic, Care_Sought_Private_Hospital, Care_Sought_Community_Based_Practioner, Care_Sought_Trained_Birth_Attendant, Care_Sought_Private_Physician, Care_Sought_Pharmacy, Care_Sought_Other_Provider, Care_Sought_Relative_Friend, Health_Records_for_Deceased, Mother_Ever_Tested_for_HIV, Mother_HIV_Positive, Mother_AIDS_Positive, age_death, resident_density))
 df_va <- df_va[which(is.finite(df_va$resident_density)),]
 ```
 
