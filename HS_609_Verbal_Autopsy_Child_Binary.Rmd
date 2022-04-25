@@ -253,6 +253,20 @@ for (i in 1:ncol(df_va)){
 hist_list
 ```
 
+
+Create a variable to indicate whether age<5
+```{r}
+df_va$age_less_5 <- ifelse(df_va$age_death<5,'Yes','No')
+df_va$age_less_5 <- as.factor(df_va$age_less_5)
+```
+
+Drop rows that says "Don't Know" for Gender
+```{r}
+missing_gender_index <- which(df_va$Gender=="Don't Know")
+df_va <- df_va[-c(missing_gender_index),]
+```
+
+
 Plot bar charts for all the categorical variables
 ```{r}
 library(scales)
@@ -281,6 +295,10 @@ for (i in 1:ncol(df_va)){
 bar_list
 ```
 
+
+
+
+
 Plot grouped box plots for numerical variables with accidental/non-accidental CoD
 ```{r}
 var_list <- names(df_va)
@@ -301,6 +319,30 @@ for (i in 3:length(var_list)){
 ```{r}
 grouped_box_list
 ```
+
+```{r}
+var_list <- names(df_va)
+grouped_box_list <- list()
+z <- 0
+for (i in 3:length(var_list)){
+  if (is.numeric(df_va[,i])){
+    ad_index=which(names(df_va)=='accidental_death')
+    z <- z+1
+    grouped_box <- ggplot(data=df_va,aes_string(x=var_list[ad_index],y=var_list[i],fill=var_list[ad_index]))+
+      geom_boxplot()+
+      theme(axis.text=element_text(size=10,angle=45,hjust=1),axis.title=element_text(size=10),legend.key.size=unit(1,"cm"),legend.title=element_text(size=10),legend.text=element_text(size=10))+facet_grid(.~site)
+    grouped_box_list[[z]] <- grouped_box
+  }
+}
+```
+
+```{r}
+grouped_box_list
+```
+
+
+
+
 
 ```{r}
 grouped_bar_list <- list()
@@ -348,5 +390,11 @@ print(summary(log_model_step),digit=2)
 
 ```{r}
 exp(coef(log_model_step))
+```
+
+Supplemental data\
+
+```{r}
+
 ```
 
