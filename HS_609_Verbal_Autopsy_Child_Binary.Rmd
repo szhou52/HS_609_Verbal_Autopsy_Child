@@ -256,8 +256,8 @@ hist_list
 
 Create a variable to indicate whether age<5
 ```{r}
-df_va$age_less_5 <- ifelse(df_va$age_death<5,'Yes','No')
-df_va$age_less_5 <- as.factor(df_va$age_less_5)
+# df_va$age_less_5 <- ifelse(df_va$age_death<5,'Yes','No')
+# df_va$age_less_5 <- as.factor(df_va$age_less_5)
 ```
 
 Drop rows that says "Don't Know" for Gender
@@ -369,7 +369,7 @@ grouped_bar_list
 **Modeling**\
 Step 1: All the variables in df_va
 ```{r}
-df_va <- subset(df_va,select=c(accidental_death,site, Num_Rooms_in_Household, Separate_Room_for_Cooking, Mother_Living_or_Deceased, Location_of_Birth, Size_at_Birth, Weight_at_Birth, Gender, Sought_Care_While_Ill, Care_Sought_Traditional_Healer, Care_Sought_Homeopath, Care_Sought_Religious_Leader, Care_Sought_Governmental_Hospital, Care_Sought_Governmental_Health_Center_Clinic, Care_Sought_Private_Hospital, Care_Sought_Community_Based_Practioner, Care_Sought_Trained_Birth_Attendant, Care_Sought_Private_Physician, Care_Sought_Pharmacy, Care_Sought_Other_Provider, Care_Sought_Relative_Friend, Health_Records_for_Deceased, Mother_Ever_Tested_for_HIV, Mother_HIV_Positive, Mother_AIDS_Positive, age_death, resident_density))
+df_va <- subset(df_va,select=c(accidental_death,site, Num_Rooms_in_Household, Separate_Room_for_Cooking, Mother_Living, Location_of_Birth, Size_at_Birth, Weight_at_Birth, Gender, Sought_Care_While_Ill, Care_Sought_Traditional_Healer, Care_Sought_Homeopath, Care_Sought_Religious_Leader, Care_Sought_Governmental_Hospital, Care_Sought_Governmental_Health_Center_Clinic, Care_Sought_Private_Hospital, Care_Sought_Community_Based_Practioner, Care_Sought_Trained_Birth_Attendant, Care_Sought_Private_Physician, Care_Sought_Pharmacy, Care_Sought_Other_Provider, Care_Sought_Relative_Friend, Health_Records_for_Deceased, Mother_Ever_Tested_for_HIV, Mother_HIV_Positive, Mother_AIDS_Positive, age_death, resident_density))
 df_va <- df_va[which(is.finite(df_va$resident_density)),]
 log_model_all <- glm(formula=accidental_death ~., family=binomial,data = df_va)
 ```
@@ -378,10 +378,35 @@ log_model_all <- glm(formula=accidental_death ~., family=binomial,data = df_va)
 print(summary(log_model_all),digit=2)
 ```
 
+```{r}
+# 1) Compute the difference between the deviance of the null/fitted model, as well as the difference between the degree of freedom of the null/fitted model.
+dev_diff_1 <- log_model_all$null.deviance - log_model_all$deviance
+df_diff_1 <- log_model_all$df.null - log_model_all$df.residual
+
+# 2) Compute chi square and the corresponding p value
+chisq_log_model_all <- 1 - pchisq(dev_diff_1, df_diff_1)
+chisq_log_model_all
+```
+```{r}
+adjusted_R_square_all <- 1-(log_model_all$deviance-(ncol(df_va)-1))/log_model_all$null.deviance
+adjusted_R_square_all
+```
+
+
+
+
+
 Step 2: Stepwise regression for all the variabels in df_va; compare AIC
+
+```{r}
+# If only want to keep the significant (<0.05) variables in the stepwise model, then
+# k=qchisq(0.05,1,lower.tail=FALSE)
+# add k to the stepAIC argument
+```
+
 ```{r}
 library(MASS)
-log_model_step <- stepAIC(log_model_all,direction='both',trace = FALSE)
+log_model_step <- stepAIC(log_model_all,direction='backward',trace = FALSE)
 ```
 
 ```{r}
@@ -389,12 +414,123 @@ print(summary(log_model_step),digit=2)
 ```
 
 ```{r}
+adjusted_R_square_step <- 1-(log_model_step$deviance-14)/log_model_step$null.deviance
+adjusted_R_square_step
+```
+
+
+```{r}
 exp(coef(log_model_step))
 ```
 
 Supplemental data\
+```{r}
+df_va$gdp_per_ca=case_when(df_va$site=='UP'~975,
+                           df_va$site=='AP'~2607,
+                           df_va$site=='Dar'~2024,
+                           df_va$site=='Pemba'~2500,
+                           df_va$site=='Bohol'~2080,
+                           df_va$site=='Mexico'~47924)
+
+```
 
 ```{r}
+df_va$life_exp=case_when(df_va$site=='UP'&df_va$Gender=='Male'~64.8,
+                         df_va$site=='UP'&df_va$Gender=='Female'~65.8,
+                         df_va$site=='AP'&df_va$Gender=='Male'~68.7,
+                         df_va$site=='AP'&df_va$Gender=='Feale'~71.8,
+                         df_va$site=='Dar'&df_va$Gender=='Male'~60,
+                         df_va$site=='Dar'&df_va$Gender=='Female'~65,
+                         df_va$site=='Pemba'&df_va$Gender=='Male'~64,
+                         df_va$site=='Pemba'&df_va$Gender=='Female'~67,
+                         df_va$site=='Bohol'&df_va$Gender=='Male'~68,
+                         df_va$site=='Bohol'&df_va$Gender=='Female'~73,
+                         df_va$site=='Mexico'&df_va$Gender=='Male'~76,
+                         df_va$site=='Mexico'&df_va$Gender=='Female'~79)
+```
 
+```{r}
+df_va$urbanization=case_when(df_va$site=='UP'|df_va$site=='AP'~34.47,
+                             df_va$site=='Dar'~35.23,
+                             df_va$site=='Pemba'~17,
+                             df_va$site=='Bohol'~47.7,
+                             df_va$site=='Mexico'~81)
+```
+
+```{r}
+df_va$child_labor=case_when(df_va$site=='UP'~20,
+                           df_va$site=='AP'~4.7,
+                           df_va$site=='Dar'~14.4,
+                           df_va$site=='Pemba'~35.6,
+                           df_va$site=='Bohol'~7.9,
+                           df_va$site=='Mexico'~6)
+```
+
+```{r}
+df_va$infant_mortality=case_when(df_va$site=='UP'~63.5,
+                           df_va$site=='AP'~34.9,
+                           df_va$site=='Dar'~56,
+                           df_va$site=='Pemba'~38,
+                           df_va$site=='Bohol'~19.2,
+                           df_va$site=='Mexico'~13.02)
+```
+
+```{r}
+df_va$Under_5_mortality=case_when(df_va$site=='UP'~78.1,
+                           df_va$site=='AP'~40.8,
+                           df_va$site=='Dar'~86,
+                           df_va$site=='Pemba'~88,
+                           df_va$site=='Bohol'~23.3,
+                           df_va$site=='Mexico'~15)
+```
+
+Step 3: add supplemental data to the full model
+```{r}
+log_model_sup <- glm(formula=accidental_death ~., family=binomial,data = df_va)
+summary(log_model_sup)
+```
+Statistical tests to show p value on the grouped charts
+```{r}
+chisq.test(df_va$site,df_va$accidental_death)
+```
+
+```{r}
+t.test(df_va$age_death~df_va$accidental_death)
+```
+
+```{r}
+chisq.test(df_va$Gender,df_va$accidental_death)
+```
+
+```{r}
+t.test(df_va$resident_density~df_va$accidental_death)
+```
+
+```{r}
+chisq.test(df_va$Health_Records_for_Deceased,df_va$accidental_death)
+```
+
+```{r}
+chisq.test(df_va$Mother_Living,df_va$accidental_death)
+```
+
+```{r}
+chisq.test(df_va$Location_of_Birth,df_va$accidental_death)
+```
+
+```{r}
+chisq.test(df_va$Care_Sought_Private_Physician,df_va$accidental_death)
+```
+
+```{r}
+chisq.test(df_va$Care_Sought_Private_Hospital,df_va$accidental_death)
+```
+
+```{r}
+chisq.test(df_va$Care_Sought_Governmental_Hospital,df_va$accidental_death)
+```
+
+```{r}
+chisq.test(df_va$Care_Sought_Governmental_Health_Center_Clinic,df_va$accidental_death)
 ```
 
